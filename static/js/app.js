@@ -37,6 +37,31 @@ function showMessage(titleText, messageText, isError = false) {
   results.replaceChildren(title, message);
   results.classList.remove("empty-state", "weather-loaded");
   results.classList.toggle("weather-error", isError);
+  if (isError) delete document.body.dataset.theme;
+}
+
+function themeFor(text, code) {
+  const t = String(text || "").toLowerCase();
+  if (/thunder|storm/.test(t) || [95, 96, 99].includes(code)) return "storm";
+  if (/snow|sleet|ice|blizzard/.test(t) || (code >= 71 && code <= 77) || code === 85 || code === 86) return "snow";
+  if (/rain|drizzle|shower/.test(t) || (code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return "rain";
+  if (/fog|mist|haze/.test(t) || code === 45 || code === 48) return "fog";
+  if (/cloud|overcast/.test(t) || code === 1 || code === 2 || code === 3) return "cloudy";
+  if (/clear|sun/.test(t) || code === 0) return "clear";
+  return null;
+}
+
+function applyTheme(current, conditionText) {
+  const code = Number(current.weather_code ?? current.weathercode ?? current.code);
+  let theme = themeFor(conditionText, Number.isNaN(code) ? undefined : code);
+  if ((current.is_day === 0 || current.is_day === false) && (theme === "clear" || theme === "cloudy")) {
+    theme = "night";
+  }
+  if (theme) {
+    document.body.dataset.theme = theme;
+  } else {
+    delete document.body.dataset.theme;
+  }
 }
 
 function renderWeather(data, requestedCity) {
@@ -51,6 +76,7 @@ function renderWeather(data, requestedCity) {
   condition.className = "weather-condition";
   condition.textContent = current.condition || current.conditions || current.description || "Current conditions";
   metrics.className = "weather-metrics";
+  applyTheme(current, condition.textContent);
 
   const temperature = current.temperature ?? current.temperature_2m ?? current.temp_c ?? current.temp;
   const temperatureUnit = current.temperature_unit || data.units?.temperature || "";
