@@ -248,3 +248,26 @@ h1 {
     transition-duration: 0.01ms !important;
   }
 }
+
+body {
+  transition: background-color 0.6s ease;
+}
+
+body[data-theme] {
+  background-image: var(--theme-gradient);
+  background-size: auto;
+  background-attachment: fixed;
+}
+
+body[data-theme="clear"] { --theme-gradient: linear-gradient(160deg, #8fd3ff, #fff2b3); }
+body[data-theme="cloudy"] { --theme-gradient: linear-gradient(160deg, #cfd8dc, #90a4ae); }
+body[data-theme="rain"] { --theme-gradient: linear-gradient(160deg, #607d8b, #37474f); }
+body[data-theme="snow"] { --theme-gradient: linear-gradient(160deg, #eef5fb, #b8cde0); }
+body[data-theme="storm"] { --theme-gradient: linear-gradient(160deg, #3b3f58, #1c1d2b); }
+body[data-theme="fog"] { --theme-gradient: linear-gradient(160deg, #e0e4e6, #b0b8bc); }
+body[data-theme="night"] { --theme-gradient: linear-gradient(160deg, #1a2447, #0b1026); }
+body[data-theme="rain"] .weather-loaded,
+body[data-theme="storm"] .weather-loaded,
+body[data-theme="night"] .weather-loaded {
+  background: rgba(255, 255, 255, 0.92);
+}
