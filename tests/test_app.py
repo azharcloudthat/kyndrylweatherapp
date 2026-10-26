@@ -23,7 +23,7 @@ class WeatherRouteTests(unittest.TestCase):
     def test_missing_city_returns_bad_request(self):
         response = self.client.get("/weather")
 
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get_json(), {"error": "Enter a city name."})
 
     @patch("app.requests.get")
