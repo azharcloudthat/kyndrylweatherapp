@@ -2,7 +2,7 @@
 
 A small Flask web app for looking up a city's current weather. It uses the Open-Meteo Geocoding and Forecast APIs, so no API key is required.
 
-Welcome team
+Hello Everyone
 ## Features
 
 - Search for weather by city name.
