@@ -3,7 +3,7 @@ on:
   workflow_run:
     workflows: ["CI"]
     types: [completed]
-    branches: ["**"]
+    branches: ["develop"]
     conclusion: [failure]
 engine:
   id: copilot

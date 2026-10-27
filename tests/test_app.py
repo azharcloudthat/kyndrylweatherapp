@@ -20,10 +20,28 @@ class WeatherRouteTests(unittest.TestCase):
         weather_app.app.config["TESTING"] = True
         self.client = weather_app.app.test_client()
 
+    def test_health_returns_ok(self):
+        response = self.client.get("/health")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json(), {"status": "ok"})
+
+    def test_ping_returns_ok(self):
+        response = self.client.get("/ping")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json(), {"status": "ok"})
+
+    def test_version_returns_version(self):
+        response = self.client.get("/version")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json(), {"version": "1.0"})
+
     def test_missing_city_returns_bad_request(self):
         response = self.client.get("/weather")
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 400)
         self.assertEqual(response.get_json(), {"error": "Enter a city name."})
 
     @patch("app.requests.get")
